@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 		return (0);
 	}
 
-	if (ping_run(&ctx) != 0)
+	if (ping_run(&ctx))
 		return (2);
 
 	return (0);
