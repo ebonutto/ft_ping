@@ -1,34 +1,23 @@
-# Project
 NAME := ft_ping
 
-# Directories
 SRC_DIR := src
 INC_DIR := include
 BUILD_DIR := .build
 
-# Compiler
 CC := cc
 CFLAGS := -Wall -Wextra -Werror
 CPPFLAGS := -I$(INC_DIR) -MMD -MP
-LDFLAGS := 
-LDLIBS := $(addprefix -l, m)
 
-# Docker
-DOCKER_IMAGE := $(NAME)
-DOCKER_FLAGS := --cap-add=NET_RAW --rm -it -v $(shell pwd):/app
-
-# Sources
 SRCS := $(shell find $(SRC_DIR) -type f -name "*.c")
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
-# Build rules
-.PHONY: all clean fclean re docker-build docker-run docker-clean
+.PHONY: all clean fclean re
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $^ -o $@ $(LDFLAGS) $(LDLIBS)
+	$(CC) $^ -o $@
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
@@ -43,13 +32,3 @@ fclean: clean
 re: fclean all
 
 -include $(DEPS)
-
-# Docker rules
-docker-build:
-	docker build --target dev -t $(DOCKER_IMAGE):dev .
-
-docker-run: docker-build
-	docker run $(DOCKER_FLAGS) $(DOCKER_IMAGE):dev
-
-docker-clean:
-	docker rmi -f $(DOCKER_IMAGE):dev
