@@ -52,8 +52,10 @@ static int ping_loop(t_ping_ctx *ctx)
 	seq = 0;
 	while (g_pingloop) {
 		gettimeofday(&tv_before, NULL);
+
 		if (ping_once(ctx, seq) != 0)
 			return (1);
+
 		seq++;
 		if (ctx->count && seq >= (unsigned short)ctx->count)
 			break ;
@@ -73,9 +75,11 @@ int ping_run(t_ping_ctx *ctx)
 		ping_cleanup(ctx);
 		return (1);
 	}
+
 	print_header(ctx);
 	ret = ping_loop(ctx);
 	print_stats(ctx);
+
 	ping_cleanup(ctx);
 	return (ret);
 }
