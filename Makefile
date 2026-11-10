@@ -7,6 +7,7 @@ BUILD_DIR := .build
 CC := cc
 CFLAGS := -Wall -Wextra -Werror
 CPPFLAGS := -I$(INC_DIR) -MMD -MP
+LDLIBS = -lm
 
 SRCS := $(shell find $(SRC_DIR) -type f -name "*.c")
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
@@ -17,7 +18,7 @@ DEPS := $(OBJS:.o=.d)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $^ -o $@
+	$(CC) $^ $(LDLIBS) -o $@
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
